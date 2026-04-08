@@ -24,7 +24,6 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                 "toggles" => array(
                     "main_content" => esc_html__( "Content", "flexible-portfolio" ),
                     "elements"     => esc_html__( "Elements", "flexible-portfolio" ),
-                    "ordering"     => esc_html__( "Reihenfolge", "flexible-portfolio" ),
                 ),
             ),
         );
@@ -84,27 +83,15 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                 "default"     => "12",
                 "toggle_slug" => "main_content",
             ),
-            "orderby" => array(
+            "order" => array(
                 "label"       => esc_html__( "Sortierung", "flexible-portfolio" ),
                 "type"        => "select",
                 "options"     => array(
-                    "date"       => esc_html__( "Datum", "flexible-portfolio" ),
-                    "title"      => esc_html__( "Titel", "flexible-portfolio" ),
-                    "menu_order" => esc_html__( "Manuelle Reihenfolge", "flexible-portfolio" ),
-                    "rand"       => esc_html__( "Zufällig", "flexible-portfolio" ),
-                ),
-                "default"     => "date",
-                "toggle_slug" => "ordering",
-            ),
-            "order" => array(
-                "label"       => esc_html__( "Sortierrichtung", "flexible-portfolio" ),
-                "type"        => "select",
-                "options"     => array(
-                    "DESC" => esc_html__( "Absteigend", "flexible-portfolio" ),
-                    "ASC"  => esc_html__( "Aufsteigend", "flexible-portfolio" ),
+                    "DESC" => esc_html__( "Neueste zuerst", "flexible-portfolio" ),
+                    "ASC"  => esc_html__( "Älteste zuerst", "flexible-portfolio" ),
                 ),
                 "default"     => "DESC",
-                "toggle_slug" => "ordering",
+                "toggle_slug" => "elements",
             ),
             "show_filter" => array(
                 "label"       => esc_html__( "Filtertabs anzeigen", "flexible-portfolio" ),
@@ -168,7 +155,7 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
         $keys = array(
             "post_type", "filter_by", "include_categories", "include_tags",
             "include_posts", "posts_number", "show_filter", "show_title",
-            "show_categories", "fullwidth", "columns", "orderby", "order",
+            "show_categories", "fullwidth", "columns", "order",
         );
 
         foreach ( $keys as $key ) {

@@ -23,7 +23,6 @@ function tag_portfolio_render( $atts ) {
         "show_pagination"    => "on",
         "fullwidth"          => "off",
         "columns"            => "4",
-        "orderby"            => "date",
         "order"              => "DESC",
     ), $atts, "tag_portfolio" );
 
@@ -36,7 +35,7 @@ function tag_portfolio_render( $atts ) {
         "posts_per_page" => intval( $atts["posts_number"] ),
         "post_status"    => array( "publish", "private" ),
         "perm"           => "readable",
-        "orderby"        => $atts["orderby"],
+        "orderby"        => "date",
         "order"          => $atts["order"],
     );
 
@@ -233,7 +232,7 @@ function et_pb_tag_portfolio_fallback( $atts, $content = '' ) {
     $keys = array(
         'post_type', 'filter_by', 'include_categories', 'include_tags',
         'include_posts', 'posts_number', 'show_filter', 'show_title',
-        'show_categories', 'fullwidth', 'columns', 'orderby', 'order',
+        'show_categories', 'fullwidth', 'columns', 'order',
     );
     foreach ( $keys as $key ) {
         if ( isset( $atts[ $key ] ) && $atts[ $key ] !== '' ) {
