@@ -182,6 +182,4 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
     }
 }
 
-if ( function_exists( "et_builder_should_load_all_module_data" ) && et_builder_should_load_all_module_data() ) {
-    new ET_Builder_Module_TagPortfolio();
-}
+new ET_Builder_Module_TagPortfolio();

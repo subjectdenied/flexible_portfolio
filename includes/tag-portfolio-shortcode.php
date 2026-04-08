@@ -227,3 +227,19 @@ function tag_portfolio_render( $atts ) {
 }
 
 add_shortcode( "tag_portfolio", "tag_portfolio_render" );
+
+function et_pb_tag_portfolio_fallback( $atts, $content = '' ) {
+    $params = array();
+    $keys = array(
+        'post_type', 'filter_by', 'include_categories', 'include_tags',
+        'include_posts', 'posts_number', 'show_filter', 'show_title',
+        'show_categories', 'fullwidth', 'columns', 'orderby', 'order',
+    );
+    foreach ( $keys as $key ) {
+        if ( isset( $atts[ $key ] ) && $atts[ $key ] !== '' ) {
+            $params[] = sprintf( '%s="%s"', $key, esc_attr( $atts[ $key ] ) );
+        }
+    }
+    return do_shortcode( '[tag_portfolio ' . implode( ' ', $params ) . ']' );
+}
+add_shortcode( 'et_pb_tag_portfolio', 'et_pb_tag_portfolio_fallback' );
