@@ -68,7 +68,7 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                 "type"             => "categories",
                 "taxonomy_name"    => "post_tag",
                 "renderer_options" => array(
-                    "use_terms" => true,
+                    "use_terms" => false,
                 ),
                 "toggle_slug"      => "main_content",
             ),
