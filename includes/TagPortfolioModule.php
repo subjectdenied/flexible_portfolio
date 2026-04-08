@@ -151,7 +151,7 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
     }
 
     public function render( $attrs, $content, $render_slug ) {
-        $params = array();
+        $atts = array();
         $keys = array(
             "post_type", "filter_by", "include_categories", "include_tags",
             "include_posts", "posts_number", "show_filter", "show_title",
@@ -159,13 +159,12 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
         );
 
         foreach ( $keys as $key ) {
-            $val = isset( $this->props[ $key ] ) ? $this->props[ $key ] : "";
-            if ( $val !== "" ) {
-                $params[] = sprintf( "%s=\"%s\"", $key, esc_attr( $val ) );
+            if ( isset( $this->props[ $key ] ) && $this->props[ $key ] !== "" ) {
+                $atts[ $key ] = $this->props[ $key ];
             }
         }
 
-        return do_shortcode( "[tag_portfolio " . implode( " ", $params ) . "]" );
+        return tag_portfolio_render( $atts );
     }
 }
 
