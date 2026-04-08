@@ -59,12 +59,9 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                 "type"             => "categories",
                 "taxonomy_name"    => "category",
                 "renderer_options" => array(
-                    "use_terms" => true,
+                    "use_terms" => false,
                 ),
                 "toggle_slug"      => "main_content",
-                "show_if"          => array(
-                    "filter_by" => array( "category", "both" ),
-                ),
             ),
             "include_tags" => array(
                 "label"            => esc_html__( "Schlagwörter einschließen", "flavor" ),
@@ -74,9 +71,6 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                     "use_terms" => true,
                 ),
                 "toggle_slug"      => "main_content",
-                "show_if"          => array(
-                    "filter_by" => array( "post_tag", "both" ),
-                ),
             ),
             "include_posts" => array(
                 "label"       => esc_html__( "Bestimmte Beiträge/Seiten (IDs)", "flavor" ),
