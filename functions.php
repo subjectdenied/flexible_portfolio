@@ -48,5 +48,18 @@ function tag_portfolio_load_divi_module() {
     }
 }
 add_action( 'et_builder_ready', 'tag_portfolio_load_divi_module' );
+/**
+ * Enqueue Divi portfolio CSS when our Tag Portfolio module is used.
+ */
+function tag_portfolio_enqueue_styles() {
+    global $post;
+    if ( is_a( $post, 'WP_Post' ) && ( has_shortcode( $post->post_content, 'et_pb_tag_portfolio' ) || has_shortcode( $post->post_content, 'tag_portfolio' ) ) ) {
+        $assets_prefix = get_template_directory_uri() . '/includes/builder/feature/dynamic-assets/assets/css';
+        wp_enqueue_style( 'et-pb-portfolio', $assets_prefix . '/portfolio.css', array(), ET_BUILDER_VERSION );
+        wp_enqueue_style( 'et-pb-filterable-portfolio', $assets_prefix . '/filterable_portfolio.css', array(), ET_BUILDER_VERSION );
+        wp_enqueue_style( 'et-pb-overlay', $assets_prefix . '/overlay.css', array(), ET_BUILDER_VERSION );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'tag_portfolio_enqueue_styles' );
 
 ?>
