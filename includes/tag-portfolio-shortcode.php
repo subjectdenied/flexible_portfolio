@@ -79,7 +79,7 @@ function tag_portfolio_render( $atts ) {
 
     if ( ! $query->have_posts() ) {
         wp_reset_postdata();
-        return "<div class=\"et_pb_portfolio_items\"><p>" . esc_html__( "Keine Beiträge gefunden.", "flavor" ) . "</p></div>";
+        return "<div class=\"et_pb_portfolio_items\"><p>" . esc_html__( "Keine Beiträge gefunden.", "flexible-portfolio" ) . "</p></div>";
     }
 
     // Determine filter taxonomy
@@ -179,7 +179,7 @@ function tag_portfolio_render( $atts ) {
             "<li class=\"et_pb_portfolio_filter et_pb_portfolio_filter_all\">" .
                 "<a href=\"#\" class=\"active\" data-category-slug=\"all\">%s</a>" .
             "</li>",
-            esc_html__( "Alle", "flavor" )
+            esc_html__( "Alle", "flexible-portfolio" )
         );
 
         // Sort terms by name

@@ -15,16 +15,16 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
     public $vb_support = "partial";
 
     function init() {
-        $this->name = esc_html__( "Tag Portfolio", "flavor" );
-        $this->plural = esc_html__( "Tag Portfolios", "flavor" );
+        $this->name = esc_html__( "Tag Portfolio", "flexible-portfolio" );
+        $this->plural = esc_html__( "Tag Portfolios", "flexible-portfolio" );
         $this->icon = "P";
 
         $this->settings_modal_toggles = array(
             "general" => array(
                 "toggles" => array(
-                    "main_content" => esc_html__( "Content", "flavor" ),
-                    "elements"     => esc_html__( "Elements", "flavor" ),
-                    "ordering"     => esc_html__( "Reihenfolge", "flavor" ),
+                    "main_content" => esc_html__( "Content", "flexible-portfolio" ),
+                    "elements"     => esc_html__( "Elements", "flexible-portfolio" ),
+                    "ordering"     => esc_html__( "Reihenfolge", "flexible-portfolio" ),
                 ),
             ),
         );
@@ -33,29 +33,29 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
     function get_fields() {
         return array(
             "post_type" => array(
-                "label"       => esc_html__( "Inhaltstyp", "flavor" ),
+                "label"       => esc_html__( "Inhaltstyp", "flexible-portfolio" ),
                 "type"        => "select",
                 "options"     => array(
-                    "post"      => esc_html__( "Beiträge", "flavor" ),
-                    "page"      => esc_html__( "Seiten", "flavor" ),
-                    "post,page" => esc_html__( "Beiträge & Seiten", "flavor" ),
+                    "post"      => esc_html__( "Beiträge", "flexible-portfolio" ),
+                    "page"      => esc_html__( "Seiten", "flexible-portfolio" ),
+                    "post,page" => esc_html__( "Beiträge & Seiten", "flexible-portfolio" ),
                 ),
                 "default"     => "post",
                 "toggle_slug" => "main_content",
             ),
             "filter_by" => array(
-                "label"       => esc_html__( "Filtern nach", "flavor" ),
+                "label"       => esc_html__( "Filtern nach", "flexible-portfolio" ),
                 "type"        => "select",
                 "options"     => array(
-                    "category" => esc_html__( "Kategorie", "flavor" ),
-                    "post_tag" => esc_html__( "Schlagwort", "flavor" ),
-                    "both"     => esc_html__( "Kategorie & Schlagwort", "flavor" ),
+                    "category" => esc_html__( "Kategorie", "flexible-portfolio" ),
+                    "post_tag" => esc_html__( "Schlagwort", "flexible-portfolio" ),
+                    "both"     => esc_html__( "Kategorie & Schlagwort", "flexible-portfolio" ),
                 ),
                 "default"     => "category",
                 "toggle_slug" => "main_content",
             ),
             "include_categories" => array(
-                "label"            => esc_html__( "Kategorien einschließen", "flavor" ),
+                "label"            => esc_html__( "Kategorien einschließen", "flexible-portfolio" ),
                 "type"             => "categories",
                 "taxonomy_name"    => "category",
                 "renderer_options" => array(
@@ -64,7 +64,7 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                 "toggle_slug"      => "main_content",
             ),
             "include_tags" => array(
-                "label"            => esc_html__( "Schlagwörter einschließen", "flavor" ),
+                "label"            => esc_html__( "Schlagwörter einschließen", "flexible-portfolio" ),
                 "type"             => "categories",
                 "taxonomy_name"    => "post_tag",
                 "renderer_options" => array(
@@ -73,81 +73,81 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                 "toggle_slug"      => "main_content",
             ),
             "include_posts" => array(
-                "label"       => esc_html__( "Bestimmte Beiträge/Seiten (IDs)", "flavor" ),
+                "label"       => esc_html__( "Bestimmte Beiträge/Seiten (IDs)", "flexible-portfolio" ),
                 "type"        => "text",
-                "description" => esc_html__( "Kommagetrennte Post/Seiten IDs. Leer lassen für automatische Filterung.", "flavor" ),
+                "description" => esc_html__( "Kommagetrennte Post/Seiten IDs. Leer lassen für automatische Filterung.", "flexible-portfolio" ),
                 "toggle_slug" => "main_content",
             ),
             "posts_number" => array(
-                "label"       => esc_html__( "Anzahl Beiträge", "flavor" ),
+                "label"       => esc_html__( "Anzahl Beiträge", "flexible-portfolio" ),
                 "type"        => "text",
                 "default"     => "12",
                 "toggle_slug" => "main_content",
             ),
             "orderby" => array(
-                "label"       => esc_html__( "Sortierung", "flavor" ),
+                "label"       => esc_html__( "Sortierung", "flexible-portfolio" ),
                 "type"        => "select",
                 "options"     => array(
-                    "date"       => esc_html__( "Datum", "flavor" ),
-                    "title"      => esc_html__( "Titel", "flavor" ),
-                    "menu_order" => esc_html__( "Manuelle Reihenfolge", "flavor" ),
-                    "rand"       => esc_html__( "Zufällig", "flavor" ),
+                    "date"       => esc_html__( "Datum", "flexible-portfolio" ),
+                    "title"      => esc_html__( "Titel", "flexible-portfolio" ),
+                    "menu_order" => esc_html__( "Manuelle Reihenfolge", "flexible-portfolio" ),
+                    "rand"       => esc_html__( "Zufällig", "flexible-portfolio" ),
                 ),
                 "default"     => "date",
                 "toggle_slug" => "ordering",
             ),
             "order" => array(
-                "label"       => esc_html__( "Sortierrichtung", "flavor" ),
+                "label"       => esc_html__( "Sortierrichtung", "flexible-portfolio" ),
                 "type"        => "select",
                 "options"     => array(
-                    "DESC" => esc_html__( "Absteigend", "flavor" ),
-                    "ASC"  => esc_html__( "Aufsteigend", "flavor" ),
+                    "DESC" => esc_html__( "Absteigend", "flexible-portfolio" ),
+                    "ASC"  => esc_html__( "Aufsteigend", "flexible-portfolio" ),
                 ),
                 "default"     => "DESC",
                 "toggle_slug" => "ordering",
             ),
             "show_filter" => array(
-                "label"       => esc_html__( "Filtertabs anzeigen", "flavor" ),
+                "label"       => esc_html__( "Filtertabs anzeigen", "flexible-portfolio" ),
                 "type"        => "yes_no_button",
                 "options"     => array(
-                    "on"  => esc_html__( "Ja", "flavor" ),
-                    "off" => esc_html__( "Nein", "flavor" ),
+                    "on"  => esc_html__( "Ja", "flexible-portfolio" ),
+                    "off" => esc_html__( "Nein", "flexible-portfolio" ),
                 ),
                 "default"     => "on",
                 "toggle_slug" => "elements",
             ),
             "show_title" => array(
-                "label"       => esc_html__( "Titel anzeigen", "flavor" ),
+                "label"       => esc_html__( "Titel anzeigen", "flexible-portfolio" ),
                 "type"        => "yes_no_button",
                 "options"     => array(
-                    "on"  => esc_html__( "Ja", "flavor" ),
-                    "off" => esc_html__( "Nein", "flavor" ),
+                    "on"  => esc_html__( "Ja", "flexible-portfolio" ),
+                    "off" => esc_html__( "Nein", "flexible-portfolio" ),
                 ),
                 "default"     => "on",
                 "toggle_slug" => "elements",
             ),
             "show_categories" => array(
-                "label"       => esc_html__( "Kategorien/Tags anzeigen", "flavor" ),
+                "label"       => esc_html__( "Kategorien/Tags anzeigen", "flexible-portfolio" ),
                 "type"        => "yes_no_button",
                 "options"     => array(
-                    "on"  => esc_html__( "Ja", "flavor" ),
-                    "off" => esc_html__( "Nein", "flavor" ),
+                    "on"  => esc_html__( "Ja", "flexible-portfolio" ),
+                    "off" => esc_html__( "Nein", "flexible-portfolio" ),
                 ),
                 "default"     => "on",
                 "toggle_slug" => "elements",
             ),
             "fullwidth" => array(
-                "label"       => esc_html__( "Layout", "flavor" ),
+                "label"       => esc_html__( "Layout", "flexible-portfolio" ),
                 "type"        => "select",
                 "options"     => array(
-                    "off" => esc_html__( "Raster", "flavor" ),
-                    "on"  => esc_html__( "Volle Breite", "flavor" ),
+                    "off" => esc_html__( "Raster", "flexible-portfolio" ),
+                    "on"  => esc_html__( "Volle Breite", "flexible-portfolio" ),
                 ),
                 "default"     => "off",
                 "toggle_slug" => "main_content",
             ),
             "columns" => array(
-                "label"       => esc_html__( "Spalten", "flavor" ),
+                "label"       => esc_html__( "Spalten", "flexible-portfolio" ),
                 "type"        => "range",
                 "default"     => "4",
                 "range_settings" => array(
