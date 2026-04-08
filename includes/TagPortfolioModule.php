@@ -12,7 +12,7 @@ if ( ! defined( "ABSPATH" ) ) exit;
 class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
 
     public $slug       = "et_pb_tag_portfolio";
-    public $vb_support = "on";
+    public $vb_support = "partial";
 
     function init() {
         $this->name = esc_html__( "Tag Portfolio", "flavor" );
