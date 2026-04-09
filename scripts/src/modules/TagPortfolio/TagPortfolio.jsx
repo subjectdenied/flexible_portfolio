@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 
 class TagPortfolio extends Component {
     static slug = 'et_pb_tag_portfolio';
@@ -6,6 +6,7 @@ class TagPortfolio extends Component {
     constructor(props) {
         super(props);
         this.state = { html: '', loading: true };
+        this.wrapperRef = createRef();
     }
 
     componentDidMount() {
@@ -21,6 +22,36 @@ class TagPortfolio extends Component {
         if (keys.some(k => prevProps[k] !== this.props[k])) {
             this.fetchPreview();
         }
+    }
+
+    bindFilterClicks() {
+        const wrapper = this.wrapperRef.current;
+        if (!wrapper) return;
+
+        const filters = wrapper.querySelectorAll('.et_pb_portfolio_filter a');
+        const items = wrapper.querySelectorAll('.et_pb_portfolio_item');
+
+        filters.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const slug = link.getAttribute('data-category-slug');
+
+                // Update active tab
+                filters.forEach(f => f.classList.remove('active'));
+                link.classList.add('active');
+
+                // Show/hide items
+                items.forEach(item => {
+                    if (slug === 'all' || item.classList.contains('project_category_' + slug)) {
+                        item.style.display = '';
+                        item.classList.add('active');
+                    } else {
+                        item.style.display = 'none';
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
     }
 
     fetchPreview() {
@@ -53,9 +84,7 @@ class TagPortfolio extends Component {
                     html: d.success ? d.data : '',
                     loading: false,
                 }, () => {
-                    if (window.et_pb_filterable_portfolio_init) {
-                        setTimeout(() => window.et_pb_filterable_portfolio_init(), 100);
-                    }
+                    this.bindFilterClicks();
                 });
             })
             .catch(() => {
@@ -88,7 +117,7 @@ class TagPortfolio extends Component {
             );
         }
 
-        return <div dangerouslySetInnerHTML={{ __html: this.state.html }} />;
+        return <div ref={this.wrapperRef} dangerouslySetInnerHTML={{ __html: this.state.html }} />;
     }
 }
 
