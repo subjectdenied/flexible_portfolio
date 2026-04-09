@@ -28,7 +28,8 @@ class TagPortfolio extends Component {
 
         const data = new FormData();
         data.append('action', 'flex_portfolio_preview');
-        data.append('nonce', window.FlexiblePortfolioBuilder.nonce);
+        const builderData = window.FlexiblePortfolioBuilderData || window.FlexiblePortfolioBuilder || {};
+        data.append('nonce', builderData.nonce || '');
 
         const keys = [
             'post_type', 'filter_by', 'include_categories', 'include_tags',

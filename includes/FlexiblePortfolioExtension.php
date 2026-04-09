@@ -12,6 +12,10 @@ class FlexiblePortfolioExtension extends DiviExtension {
         $this->plugin_dir     = FLEX_PORTFOLIO_DIR;
         $this->plugin_dir_url = FLEX_PORTFOLIO_URL;
 
+        $this->_builder_js_data = array(
+            'nonce' => wp_create_nonce( 'flex_portfolio_preview' ),
+        );
+
         parent::__construct( $name, $args );
     }
 }

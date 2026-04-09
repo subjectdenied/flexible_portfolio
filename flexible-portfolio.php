@@ -46,16 +46,6 @@ function flex_portfolio_ajax_preview() {
 }
 add_action( 'wp_ajax_flex_portfolio_preview', 'flex_portfolio_ajax_preview' );
 
-// Pass nonce to builder JS
-function flex_portfolio_builder_data() {
-    if ( function_exists( 'et_core_is_fb_enabled' ) && et_core_is_fb_enabled() ) {
-        wp_localize_script( 'flexible-portfolio-builder-bundle', 'FlexiblePortfolioBuilder', array(
-            'nonce' => wp_create_nonce( 'flex_portfolio_preview' ),
-        ) );
-    }
-}
-add_action( 'wp_enqueue_scripts', 'flex_portfolio_builder_data', 20 );
-
 // Enqueue Divi portfolio CSS on frontend when our module is used
 function flex_portfolio_enqueue_styles() {
     global $post;
