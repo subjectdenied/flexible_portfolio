@@ -45,6 +45,11 @@ function tag_portfolio_render( $atts ) {
         $query_args["orderby"]  = "post__in";
     }
 
+    // Require at least one filter — show nothing if unconfigured
+    if ( empty( $atts["include_categories"] ) && empty( $atts["include_tags"] ) && empty( $atts["include_posts"] ) ) {
+        return "<div class=\"et_pb_portfolio_items\"><p>" . esc_html__( "Bitte Kategorien, Schlagwörter oder Beiträge in den Moduleinstellungen auswählen.", "flexible-portfolio" ) . "</p></div>";
+    }
+
     // Tax query
     $tax_query = array();
 
