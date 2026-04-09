@@ -43,11 +43,9 @@ class TagPortfolio extends Component {
                 // Show/hide items
                 items.forEach(item => {
                     if (slug === 'all' || item.classList.contains('project_category_' + slug)) {
-                        item.style.display = '';
-                        item.classList.add('active');
+                        item.style.display = 'block';
                     } else {
                         item.style.display = 'none';
-                        item.classList.remove('active');
                     }
                 });
             });

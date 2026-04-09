@@ -153,7 +153,7 @@ function tag_portfolio_render( $atts ) {
         $permalink = esc_url( get_permalink() );
 
         $items_html .= sprintf(
-            "<div id=\"post-%1\$s\" class=\"%2\$s\">" .
+            "<div id=\"post-%1\$s\" class=\"%2\$s\" style=\"display:block\">" .
                 "<a href=\"%3\$s\">" .
                     "<span class=\"et_portfolio_image\">" .
                         "%4\$s" .
@@ -247,9 +247,8 @@ function tag_portfolio_render( $atts ) {
         $wrapper_classes[] = "et_pb_filterable_portfolio_fullwidth";
     }
 
-    $output = "<style>.flex-portfolio-active .et_pb_portfolio_item.active { display: block !important; } .flex-portfolio-active .et_pb_portfolio_item:not(.active) { display: none !important; }</style>";
-    $output .= sprintf(
-        "<div class=\"%s flex-portfolio-active\" data-posts-number=\"%s\">" .
+    $output = sprintf(
+        "<div class=\"%s\" data-posts-number=\"%s\">" .
             "%s" .
             "<div class=\"et_pb_portfolio_items_wrapper clearfix\">" .
                 "<div class=\"et_pb_portfolio_items\">" .
