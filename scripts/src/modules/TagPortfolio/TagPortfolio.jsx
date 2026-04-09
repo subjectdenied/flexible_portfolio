@@ -52,6 +52,10 @@ class TagPortfolio extends Component {
                 this.setState({
                     html: d.success ? d.data : '',
                     loading: false,
+                }, () => {
+                    if (window.et_pb_filterable_portfolio_init) {
+                        setTimeout(() => window.et_pb_filterable_portfolio_init(), 100);
+                    }
                 });
             })
             .catch(() => {
