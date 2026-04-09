@@ -92,14 +92,22 @@ function tag_portfolio_render( $atts ) {
         $filter_taxonomy = "post_tag";
     }
 
-    // Collect items and their terms for filter tabs
+    // Build list of selected term IDs for filtering
+    $selected_term_ids = array();
+    if ( ! empty( $atts["include_categories"] ) ) {
+        $selected_term_ids = array_merge( $selected_term_ids, array_map( "intval", explode( ",", $atts["include_categories"] ) ) );
+    }
+    if ( ! empty( $atts["include_tags"] ) ) {
+        $selected_term_ids = array_merge( $selected_term_ids, array_map( "intval", explode( ",", $atts["include_tags"] ) ) );
+    }
+
+    // Collect items
     $items_html = "";
-    $all_terms  = array();
 
     while ( $query->have_posts() ) {
         $query->the_post();
 
-        // Get terms for this post (for filtering classes)
+        // Get terms for this post — only include terms that were selected in settings
         $terms = array();
         if ( $atts["filter_by"] === "both" || $atts["filter_by"] === "category" ) {
             $cat_terms = get_the_terms( get_the_ID(), "category" );
@@ -114,6 +122,11 @@ function tag_portfolio_render( $atts ) {
             }
         }
 
+        // Only keep terms that match the selected filters
+        $terms = array_filter( $terms, function( $term ) use ( $selected_term_ids ) {
+            return in_array( $term->term_id, $selected_term_ids );
+        });
+
         // Build CSS classes for filtering (reuses Divi pattern)
         $term_classes = array();
         $term_labels  = array();
@@ -121,7 +134,6 @@ function tag_portfolio_render( $atts ) {
             $slug = urldecode( $term->slug );
             $term_classes[] = "project_category_" . $slug;
             $term_labels[]  = esc_html( $term->name );
-            $all_terms[ $term->term_id ] = $term;
         }
 
         $item_classes = array( "et_pb_portfolio_item", "active" );
@@ -174,34 +186,57 @@ function tag_portfolio_render( $atts ) {
 
     wp_reset_postdata();
 
-    // Build filter tabs
+    // Build filter tabs — only show terms that were explicitly selected in settings
     $filters_html = "";
-    if ( $atts["show_filter"] === "on" && ! empty( $all_terms ) ) {
-        $filters_html .= "<div class=\"et_pb_portfolio_filters clearfix\">";
-        $filters_html .= "<ul class=\"clearfix\">";
-        $filters_html .= sprintf(
-            "<li class=\"et_pb_portfolio_filter et_pb_portfolio_filter_all\">" .
-                "<a href=\"#\" class=\"active\" data-category-slug=\"all\">%s</a>" .
-            "</li>",
-            esc_html__( "Alle", "flexible-portfolio" )
-        );
+    if ( $atts["show_filter"] === "on" ) {
+        $selected_terms = array();
 
-        // Sort terms by name
-        usort( $all_terms, function( $a, $b ) {
-            return strcasecmp( $a->name, $b->name );
-        });
-
-        foreach ( $all_terms as $term ) {
-            $filters_html .= sprintf(
-                "<li class=\"et_pb_portfolio_filter\">" .
-                    "<a href=\"#\" data-category-slug=\"%s\">%s</a>" .
-                "</li>",
-                esc_attr( urldecode( $term->slug ) ),
-                esc_html( $term->name )
-            );
+        if ( ! empty( $atts["include_categories"] ) ) {
+            $cat_ids = array_map( "intval", explode( ",", $atts["include_categories"] ) );
+            foreach ( $cat_ids as $tid ) {
+                $term = get_term( $tid, "category" );
+                if ( $term && ! is_wp_error( $term ) ) {
+                    $selected_terms[ $term->term_id ] = $term;
+                }
+            }
         }
 
-        $filters_html .= "</ul></div>";
+        if ( ! empty( $atts["include_tags"] ) ) {
+            $tag_ids = array_map( "intval", explode( ",", $atts["include_tags"] ) );
+            foreach ( $tag_ids as $tid ) {
+                $term = get_term( $tid, "post_tag" );
+                if ( $term && ! is_wp_error( $term ) ) {
+                    $selected_terms[ $term->term_id ] = $term;
+                }
+            }
+        }
+
+        if ( ! empty( $selected_terms ) ) {
+            $filters_html .= "<div class=\"et_pb_portfolio_filters clearfix\">";
+            $filters_html .= "<ul class=\"clearfix\">";
+            $filters_html .= sprintf(
+                "<li class=\"et_pb_portfolio_filter et_pb_portfolio_filter_all\">" .
+                    "<a href=\"#\" class=\"active\" data-category-slug=\"all\">%s</a>" .
+                "</li>",
+                esc_html__( "Alle", "flexible-portfolio" )
+            );
+
+            usort( $selected_terms, function( $a, $b ) {
+                return strcasecmp( $a->name, $b->name );
+            });
+
+            foreach ( $selected_terms as $term ) {
+                $filters_html .= sprintf(
+                    "<li class=\"et_pb_portfolio_filter\">" .
+                        "<a href=\"#\" data-category-slug=\"%s\">%s</a>" .
+                    "</li>",
+                    esc_attr( urldecode( $term->slug ) ),
+                    esc_html( $term->name )
+                );
+            }
+
+            $filters_html .= "</ul></div>";
+        }
     }
 
     // Wrapper classes
