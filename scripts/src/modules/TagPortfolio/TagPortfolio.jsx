@@ -28,7 +28,7 @@ class TagPortfolio extends Component {
         if (!items || items.length === 0) {
             return (
                 <div style={{ padding: '40px', textAlign: 'center', color: '#999' }}>
-                    Bitte Kategorien, Schlagwörter oder Beiträge in den Moduleinstellungen auswählen.
+                    Bitte Kategorien, Schlagw{'\u00f6'}rter oder Beitr{'\u00e4'}ge in den Moduleinstellungen ausw{'\u00e4'}hlen.
                 </div>
             );
         }

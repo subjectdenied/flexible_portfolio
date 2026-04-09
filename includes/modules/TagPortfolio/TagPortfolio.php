@@ -160,7 +160,7 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module_Type_PostBased {
     /**
      * Computed callback: returns portfolio items data for the VB.
      */
-    static function get_items( $args = array() ) {
+    static function get_items( $args = array(), $conditional_tags = array(), $current_page = array() ) {
         $defaults = array(
             'post_type'          => 'post',
             'filter_by'          => 'category',
@@ -288,7 +288,7 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module_Type_PostBased {
     /**
      * Computed callback: returns filter terms data for the VB.
      */
-    static function get_terms_data( $args = array() ) {
+    static function get_terms_data( $args = array(), $conditional_tags = array(), $current_page = array() ) {
         $defaults = array(
             'filter_by'          => 'category',
             'include_categories' => '',
