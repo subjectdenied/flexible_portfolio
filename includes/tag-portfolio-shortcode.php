@@ -207,8 +207,9 @@ function tag_portfolio_render( $atts ) {
         $wrapper_classes[] = "et_pb_filterable_portfolio_fullwidth";
     }
 
-    $output = sprintf(
-        "<div class=\"%s\" data-posts-number=\"%s\">" .
+    $output = "<style>.flex-portfolio-active .et_pb_portfolio_item { display: block !important; }</style>";
+    $output .= sprintf(
+        "<div class=\"%s flex-portfolio-active\" data-posts-number=\"%s\">" .
             "%s" .
             "<div class=\"et_pb_portfolio_items_wrapper clearfix\">" .
                 "<div class=\"et_pb_portfolio_items\">" .
