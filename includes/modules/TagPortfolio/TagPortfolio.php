@@ -2,7 +2,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-class ET_Builder_Module_TagPortfolio extends ET_Builder_Module_Type_PostBased {
+class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
 
     public $slug       = 'et_pb_tag_portfolio';
     public $vb_support = 'on';
