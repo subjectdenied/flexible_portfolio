@@ -1,121 +1,110 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 
 class TagPortfolio extends Component {
     static slug = 'et_pb_tag_portfolio';
 
     constructor(props) {
         super(props);
-        this.state = { html: '', loading: true };
-        this.wrapperRef = createRef();
+        this.state = { activeFilter: 'all' };
     }
 
-    componentDidMount() {
-        this.fetchPreview();
-    }
-
-    componentDidUpdate(prevProps) {
-        const keys = [
-            'post_type', 'filter_by', 'include_categories', 'include_tags',
-            'include_posts', 'posts_number', 'show_filter', 'show_title',
-            'show_categories', 'fullwidth', 'order',
-        ];
-        if (keys.some(k => prevProps[k] !== this.props[k])) {
-            this.fetchPreview();
-        }
-    }
-
-    bindFilterClicks() {
-        const wrapper = this.wrapperRef.current;
-        if (!wrapper) return;
-
-        const filters = wrapper.querySelectorAll('.et_pb_portfolio_filter a');
-        const items = wrapper.querySelectorAll('.et_pb_portfolio_item');
-
-        filters.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const slug = link.getAttribute('data-category-slug');
-
-                // Update active tab
-                filters.forEach(f => f.classList.remove('active'));
-                link.classList.add('active');
-
-                // Show/hide items
-                items.forEach(item => {
-                    if (slug === 'all' || item.classList.contains('project_category_' + slug)) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-    }
-
-    fetchPreview() {
-        this.setState({ loading: true });
-
-        const data = new FormData();
-        data.append('action', 'flex_portfolio_preview');
-        const builderData = window.FlexiblePortfolioBuilderData || window.FlexiblePortfolioBuilder || {};
-        data.append('nonce', builderData.nonce || '');
-
-        const keys = [
-            'post_type', 'filter_by', 'include_categories', 'include_tags',
-            'include_posts', 'posts_number', 'show_filter', 'show_title',
-            'show_categories', 'fullwidth', 'columns', 'order',
-        ];
-        keys.forEach(k => {
-            if (this.props[k]) {
-                data.append(k, this.props[k]);
-            }
-        });
-
-        const ajaxUrl = window.et_fb_options
-            ? window.et_fb_options.ajaxurl
-            : '/wp-admin/admin-ajax.php';
-
-        fetch(ajaxUrl, { method: 'POST', body: data })
-            .then(r => r.json())
-            .then(d => {
-                this.setState({
-                    html: d.success ? d.data : '',
-                    loading: false,
-                }, () => {
-                    this.bindFilterClicks();
-                });
-            })
-            .catch(() => {
-                this.setState({ html: '', loading: false });
-            });
+    handleFilterClick(e, slug) {
+        e.preventDefault();
+        this.setState({ activeFilter: slug });
     }
 
     render() {
-        if (this.state.loading) {
+        const {
+            __fp_items: items = [],
+            __fp_terms: terms = {},
+            show_filter = 'on',
+            show_title = 'on',
+            show_categories = 'on',
+            fullwidth = 'off',
+        } = this.props;
+
+        const { activeFilter } = this.state;
+
+        if (!items || items.length === 0) {
             return (
-                <div className="et_pb_tag_portfolio_loading" style={{
-                    padding: '40px',
-                    textAlign: 'center',
-                    color: '#999',
-                }}>
-                    Laden...
+                <div style={{ padding: '40px', textAlign: 'center', color: '#999' }}>
+                    Bitte Kategorien, Schlagwörter oder Beiträge in den Moduleinstellungen auswählen.
                 </div>
             );
         }
 
-        if (!this.state.html) {
-            return (
-                <div className="et_pb_tag_portfolio_empty" style={{
-                    padding: '40px',
-                    textAlign: 'center',
-                    color: '#999',
-                }}>
-                    Keine Beiträge gefunden.
-                </div>
-            );
-        }
+        const isGrid = fullwidth !== 'on';
+        const termList = Object.values(terms);
+        termList.sort((a, b) => a.label.localeCompare(b.label));
 
-        return <div ref={this.wrapperRef} dangerouslySetInnerHTML={{ __html: this.state.html }} />;
+        // Filter items by active tab
+        const visibleItems = activeFilter === 'all'
+            ? items
+            : items.filter(item =>
+                item.category_classes &&
+                item.category_classes.some(cls => cls === 'project_category_' + activeFilter)
+            );
+
+        return (
+            <div className={`et_pb_module et_pb_filterable_portfolio clearfix ${isGrid ? 'et_pb_filterable_portfolio_grid' : 'et_pb_filterable_portfolio_fullwidth'}`}>
+                {show_filter === 'on' && termList.length > 0 && (
+                    <div className="et_pb_portfolio_filters clearfix">
+                        <ul className="clearfix">
+                            <li className="et_pb_portfolio_filter et_pb_portfolio_filter_all">
+                                <a
+                                    href="#"
+                                    className={activeFilter === 'all' ? 'active' : ''}
+                                    onClick={(e) => this.handleFilterClick(e, 'all')}
+                                >
+                                    Alle
+                                </a>
+                            </li>
+                            {termList.map(term => (
+                                <li key={term.slug} className="et_pb_portfolio_filter">
+                                    <a
+                                        href="#"
+                                        className={activeFilter === term.slug ? 'active' : ''}
+                                        onClick={(e) => this.handleFilterClick(e, term.slug)}
+                                    >
+                                        {term.label}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+                <div className="et_pb_portfolio_items_wrapper clearfix">
+                    <div className="et_pb_portfolio_items">
+                        {visibleItems.map(item => (
+                            <div
+                                key={item.id}
+                                className={`et_pb_portfolio_item active ${isGrid ? 'et_pb_grid_item' : ''} ${(item.category_classes || []).join(' ')}`}
+                                style={{ display: 'block' }}
+                            >
+                                {item.thumbnail && (
+                                    <a href={item.permalink}>
+                                        <span className="et_portfolio_image">
+                                            <span dangerouslySetInnerHTML={{ __html: item.thumbnail }} />
+                                            <span className="et_overlay"></span>
+                                        </span>
+                                    </a>
+                                )}
+                                {show_title === 'on' && (
+                                    <h2 className="et_pb_module_header">
+                                        <a href={item.permalink}>{item.title}</a>
+                                    </h2>
+                                )}
+                                {show_categories === 'on' && item.post_categories && item.post_categories.length > 0 && (
+                                    <p className="post-meta">
+                                        {item.post_categories.map(c => c.label).join(', ')}
+                                    </p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
     }
 }
 

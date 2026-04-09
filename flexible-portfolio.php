@@ -24,28 +24,6 @@ function flex_portfolio_init_extension() {
 }
 add_action( 'divi_extensions_init', 'flex_portfolio_init_extension' );
 
-// AJAX endpoint for Visual Builder preview
-function flex_portfolio_ajax_preview() {
-    check_ajax_referer( 'flex_portfolio_preview', 'nonce' );
-
-    $atts = array();
-    $keys = array(
-        'post_type', 'filter_by', 'include_categories', 'include_tags',
-        'include_posts', 'posts_number', 'show_filter', 'show_title',
-        'show_categories', 'fullwidth', 'columns', 'order',
-    );
-
-    foreach ( $keys as $key ) {
-        if ( isset( $_POST[ $key ] ) && $_POST[ $key ] !== '' ) {
-            $atts[ $key ] = sanitize_text_field( $_POST[ $key ] );
-        }
-    }
-
-    $html = tag_portfolio_render( $atts );
-    wp_send_json_success( $html );
-}
-add_action( 'wp_ajax_flex_portfolio_preview', 'flex_portfolio_ajax_preview' );
-
 // Enqueue Divi portfolio CSS on frontend when our module is used
 function flex_portfolio_enqueue_styles() {
     global $post;
