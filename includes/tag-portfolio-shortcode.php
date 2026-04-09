@@ -119,7 +119,7 @@ function tag_portfolio_render( $atts ) {
             $all_terms[ $term->term_id ] = $term;
         }
 
-        $item_classes = array( "et_pb_portfolio_item" );
+        $item_classes = array( "et_pb_portfolio_item", "active" );
         if ( $atts["fullwidth"] === "off" ) {
             $item_classes[] = "et_pb_grid_item";
         }
