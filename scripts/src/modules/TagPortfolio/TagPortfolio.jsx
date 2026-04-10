@@ -5,12 +5,19 @@ class TagPortfolio extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { activeFilter: 'all' };
+        this.state = { activeFilter: 'all', currentPage: 1 };
     }
 
     handleFilterClick(e, slug) {
         e.preventDefault();
-        this.setState({ activeFilter: slug });
+        e.stopPropagation();
+        this.setState({ activeFilter: slug, currentPage: 1 });
+    }
+
+    handlePageClick(e, page) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setState({ currentPage: page });
     }
 
     render() {
@@ -20,15 +27,17 @@ class TagPortfolio extends Component {
             show_filter = 'on',
             show_title = 'on',
             show_categories = 'on',
+            show_pagination = 'on',
+            posts_number = '12',
             fullwidth = 'off',
         } = this.props;
 
-        const { activeFilter } = this.state;
+        const { activeFilter, currentPage } = this.state;
 
         if (!items || items.length === 0) {
             return (
                 <div style={{ padding: '40px', textAlign: 'center', color: '#999' }}>
-                    Bitte Kategorien, Schlagw{'\u00f6'}rter oder Beitr{'\u00e4'}ge in den Moduleinstellungen ausw{'\u00e4'}hlen.
+                    Bitte Kategorien, Schlagwörter oder Beiträge in den Moduleinstellungen auswählen.
                 </div>
             );
         }
@@ -38,15 +47,24 @@ class TagPortfolio extends Component {
         termList.sort((a, b) => a.label.localeCompare(b.label));
 
         // Filter items by active tab
-        const visibleItems = activeFilter === 'all'
+        const filteredItems = activeFilter === 'all'
             ? items
             : items.filter(item =>
                 item.category_classes &&
                 item.category_classes.some(cls => cls === 'project_category_' + activeFilter)
             );
 
+        // Paginate
+        const perPage = parseInt(posts_number, 10) || 12;
+        const totalPages = Math.ceil(filteredItems.length / perPage);
+        const showPaging = show_pagination === 'on' && totalPages > 1;
+        const startIdx = (currentPage - 1) * perPage;
+        const visibleItems = showPaging
+            ? filteredItems.slice(startIdx, startIdx + perPage)
+            : filteredItems;
+
         return (
-            <div className={`et_pb_module et_pb_filterable_portfolio clearfix ${isGrid ? 'et_pb_filterable_portfolio_grid' : 'et_pb_filterable_portfolio_fullwidth'}`}>
+            <div className={`et_pb_module fp_tag_portfolio et_pb_filterable_portfolio clearfix ${isGrid ? 'et_pb_filterable_portfolio_grid' : 'et_pb_filterable_portfolio_fullwidth'}`}>
                 {show_filter === 'on' && termList.length > 0 && (
                     <div className="et_pb_portfolio_filters clearfix">
                         <ul className="clearfix">
@@ -73,7 +91,7 @@ class TagPortfolio extends Component {
                         </ul>
                     </div>
                 )}
-                <div className="et_pb_portfolio_items_wrapper clearfix">
+                <div className={`et_pb_portfolio_items_wrapper ${showPaging ? 'clearfix' : 'no_pagination'}`}>
                     <div className="et_pb_portfolio_items">
                         {visibleItems.map(item => (
                             <div
@@ -103,6 +121,33 @@ class TagPortfolio extends Component {
                         ))}
                     </div>
                 </div>
+                {showPaging && (
+                    <div className="et_pb_portofolio_pagination clearfix">
+                        <ul>
+                            {currentPage > 1 && (
+                                <li className="prev">
+                                    <a href="#" onClick={(e) => this.handlePageClick(e, currentPage - 1)}>Vorherige</a>
+                                </li>
+                            )}
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                <li key={page} className={`page page-${page}`}>
+                                    <a
+                                        href="#"
+                                        className={currentPage === page ? 'active' : ''}
+                                        onClick={(e) => this.handlePageClick(e, page)}
+                                    >
+                                        {page}
+                                    </a>
+                                </li>
+                            ))}
+                            {currentPage < totalPages && (
+                                <li className="next">
+                                    <a href="#" onClick={(e) => this.handlePageClick(e, currentPage + 1)}>Nächste</a>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+                )}
             </div>
         );
     }

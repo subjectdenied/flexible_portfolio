@@ -8,8 +8,8 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
     public $vb_support = 'on';
 
     function init() {
-        $this->name   = esc_html__( 'Tag Portfolio', 'flexible-portfolio' );
-        $this->plural = esc_html__( 'Tag Portfolios', 'flexible-portfolio' );
+        $this->name   = esc_html__( 'Flexible Portfolio', 'flexible-portfolio' );
+        $this->plural = esc_html__( 'Flexible Portfolios', 'flexible-portfolio' );
         $this->icon   = 'P';
 
         $this->settings_modal_toggles = array(
@@ -25,32 +25,35 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
     function get_fields() {
         return array(
             'post_type' => array(
-                'label'       => esc_html__( 'Inhaltstyp', 'flexible-portfolio' ),
-                'type'        => 'select',
-                'options'     => array(
+                'label'           => esc_html__( 'Inhaltstyp', 'flexible-portfolio' ),
+                'type'            => 'select',
+                'option_category' => 'configuration',
+                'options'         => array(
                     'post'      => esc_html__( 'Beiträge', 'flexible-portfolio' ),
                     'page'      => esc_html__( 'Seiten', 'flexible-portfolio' ),
                     'post,page' => esc_html__( 'Beiträge & Seiten', 'flexible-portfolio' ),
                 ),
-                'default'         => 'post',
-                'toggle_slug'     => 'main_content',
-                'computed_affects' => array( '__fp_items', '__fp_terms' ),
+                'default'          => 'post',
+                'toggle_slug'      => 'main_content',
+                'computed_affects'  => array( '__fp_items' ),
             ),
             'filter_by' => array(
-                'label'       => esc_html__( 'Filtern nach', 'flexible-portfolio' ),
-                'type'        => 'select',
-                'options'     => array(
+                'label'           => esc_html__( 'Filtern nach', 'flexible-portfolio' ),
+                'type'            => 'select',
+                'option_category' => 'configuration',
+                'options'         => array(
                     'category' => esc_html__( 'Kategorie', 'flexible-portfolio' ),
                     'post_tag' => esc_html__( 'Schlagwort', 'flexible-portfolio' ),
                     'both'     => esc_html__( 'Kategorie & Schlagwort', 'flexible-portfolio' ),
                 ),
-                'default'         => 'category',
-                'toggle_slug'     => 'main_content',
-                'computed_affects' => array( '__fp_items', '__fp_terms' ),
+                'default'          => 'category',
+                'toggle_slug'      => 'main_content',
+                'computed_affects'  => array( '__fp_items', '__fp_terms' ),
             ),
             'include_categories' => array(
                 'label'            => esc_html__( 'Kategorien einschließen', 'flexible-portfolio' ),
                 'type'             => 'categories',
+                'option_category'  => 'basic_option',
                 'taxonomy_name'    => 'category',
                 'renderer_options' => array( 'use_terms' => false ),
                 'toggle_slug'      => 'main_content',
@@ -59,84 +62,104 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
             'include_tags' => array(
                 'label'            => esc_html__( 'Schlagwörter einschließen', 'flexible-portfolio' ),
                 'type'             => 'categories',
+                'option_category'  => 'basic_option',
                 'taxonomy_name'    => 'post_tag',
                 'renderer_options' => array( 'use_terms' => false ),
                 'toggle_slug'      => 'main_content',
                 'computed_affects'  => array( '__fp_items', '__fp_terms' ),
             ),
             'include_posts' => array(
-                'label'       => esc_html__( 'Bestimmte Beiträge/Seiten (IDs)', 'flexible-portfolio' ),
-                'type'        => 'text',
-                'description' => esc_html__( 'Kommagetrennte Post/Seiten IDs.', 'flexible-portfolio' ),
-                'toggle_slug' => 'main_content',
-                'computed_affects' => array( '__fp_items' ),
+                'label'            => esc_html__( 'Bestimmte Beiträge/Seiten (IDs)', 'flexible-portfolio' ),
+                'type'             => 'text',
+                'option_category'  => 'configuration',
+                'description'      => esc_html__( 'Kommagetrennte Post/Seiten IDs.', 'flexible-portfolio' ),
+                'toggle_slug'      => 'main_content',
+                'computed_affects'  => array( '__fp_items' ),
             ),
             'posts_number' => array(
-                'label'       => esc_html__( 'Anzahl Beiträge', 'flexible-portfolio' ),
-                'type'        => 'text',
-                'default'     => '12',
-                'toggle_slug' => 'main_content',
-                'computed_affects' => array( '__fp_items' ),
+                'label'            => esc_html__( 'Anzahl Beiträge', 'flexible-portfolio' ),
+                'type'             => 'text',
+                'option_category'  => 'configuration',
+                'default'          => '12',
+                'toggle_slug'      => 'main_content',
+                'computed_affects'  => array( '__fp_items' ),
             ),
             'order' => array(
-                'label'   => esc_html__( 'Sortierung', 'flexible-portfolio' ),
-                'type'    => 'select',
-                'options' => array(
+                'label'            => esc_html__( 'Sortierung', 'flexible-portfolio' ),
+                'type'             => 'select',
+                'option_category'  => 'configuration',
+                'options'          => array(
                     'DESC' => esc_html__( 'Neueste zuerst', 'flexible-portfolio' ),
                     'ASC'  => esc_html__( 'Älteste zuerst', 'flexible-portfolio' ),
                 ),
-                'default'     => 'DESC',
-                'toggle_slug' => 'elements',
-                'computed_affects' => array( '__fp_items' ),
+                'default'          => 'DESC',
+                'toggle_slug'      => 'elements',
+                'computed_affects'  => array( '__fp_items' ),
             ),
             'show_filter' => array(
-                'label'   => esc_html__( 'Filtertabs anzeigen', 'flexible-portfolio' ),
-                'type'    => 'yes_no_button',
-                'options' => array(
+                'label'            => esc_html__( 'Filtertabs anzeigen', 'flexible-portfolio' ),
+                'type'             => 'yes_no_button',
+                'option_category'  => 'configuration',
+                'options'          => array(
                     'on'  => esc_html__( 'Ja', 'flexible-portfolio' ),
                     'off' => esc_html__( 'Nein', 'flexible-portfolio' ),
                 ),
-                'default'     => 'on',
-                'toggle_slug' => 'elements',
+                'default'          => 'on',
+                'toggle_slug'      => 'elements',
             ),
             'show_title' => array(
-                'label'   => esc_html__( 'Titel anzeigen', 'flexible-portfolio' ),
-                'type'    => 'yes_no_button',
-                'options' => array(
+                'label'            => esc_html__( 'Titel anzeigen', 'flexible-portfolio' ),
+                'type'             => 'yes_no_button',
+                'option_category'  => 'configuration',
+                'options'          => array(
                     'on'  => esc_html__( 'Ja', 'flexible-portfolio' ),
                     'off' => esc_html__( 'Nein', 'flexible-portfolio' ),
                 ),
-                'default'     => 'on',
-                'toggle_slug' => 'elements',
+                'default'          => 'on',
+                'toggle_slug'      => 'elements',
             ),
             'show_categories' => array(
-                'label'   => esc_html__( 'Kategorien/Tags anzeigen', 'flexible-portfolio' ),
-                'type'    => 'yes_no_button',
-                'options' => array(
+                'label'            => esc_html__( 'Kategorien/Tags anzeigen', 'flexible-portfolio' ),
+                'type'             => 'yes_no_button',
+                'option_category'  => 'configuration',
+                'options'          => array(
                     'on'  => esc_html__( 'Ja', 'flexible-portfolio' ),
                     'off' => esc_html__( 'Nein', 'flexible-portfolio' ),
                 ),
-                'default'     => 'on',
-                'toggle_slug' => 'elements',
+                'default'          => 'on',
+                'toggle_slug'      => 'elements',
+            ),
+            'show_pagination' => array(
+                'label'            => esc_html__( 'Seitennavigation anzeigen', 'flexible-portfolio' ),
+                'type'             => 'yes_no_button',
+                'option_category'  => 'configuration',
+                'options'          => array(
+                    'on'  => esc_html__( 'Ja', 'flexible-portfolio' ),
+                    'off' => esc_html__( 'Nein', 'flexible-portfolio' ),
+                ),
+                'default'          => 'on',
+                'toggle_slug'      => 'elements',
             ),
             'fullwidth' => array(
-                'label'   => esc_html__( 'Layout', 'flexible-portfolio' ),
-                'type'    => 'select',
-                'options' => array(
+                'label'            => esc_html__( 'Layout', 'flexible-portfolio' ),
+                'type'             => 'select',
+                'option_category'  => 'layout',
+                'options'          => array(
                     'off' => esc_html__( 'Raster', 'flexible-portfolio' ),
                     'on'  => esc_html__( 'Volle Breite', 'flexible-portfolio' ),
                 ),
-                'default'         => 'off',
-                'toggle_slug'     => 'main_content',
-                'computed_affects' => array( '__fp_items' ),
+                'default'          => 'off',
+                'toggle_slug'      => 'main_content',
+                'computed_affects'  => array( '__fp_items' ),
             ),
             'columns' => array(
-                'label'          => esc_html__( 'Spalten', 'flexible-portfolio' ),
-                'type'           => 'range',
-                'default'        => '4',
-                'range_settings' => array( 'min' => '1', 'max' => '6', 'step' => '1' ),
-                'toggle_slug'    => 'main_content',
-                'show_if'        => array( 'fullwidth' => 'off' ),
+                'label'            => esc_html__( 'Spalten', 'flexible-portfolio' ),
+                'type'             => 'range',
+                'option_category'  => 'layout',
+                'default'          => '4',
+                'range_settings'   => array( 'min' => '1', 'max' => '6', 'step' => '1' ),
+                'toggle_slug'      => 'main_content',
+                'show_if'          => array( 'fullwidth' => 'off' ),
             ),
             // Computed fields — Divi calls these automatically for VB preview
             '__fp_items' => array(
@@ -190,7 +213,7 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
 
         $query_args = array(
             'post_type'      => $post_types,
-            'posts_per_page' => intval( $args['posts_number'] ),
+            'posts_per_page' => -1,
             'post_status'    => array( 'publish', 'private' ),
             'perm'           => 'readable',
             'orderby'        => 'date',
@@ -331,7 +354,7 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
         $keys = array(
             'post_type', 'filter_by', 'include_categories', 'include_tags',
             'include_posts', 'posts_number', 'show_filter', 'show_title',
-            'show_categories', 'fullwidth', 'columns', 'order',
+            'show_categories', 'show_pagination', 'fullwidth', 'columns', 'order',
         );
 
         foreach ( $keys as $key ) {

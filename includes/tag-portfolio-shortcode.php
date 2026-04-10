@@ -29,10 +29,10 @@ function tag_portfolio_render( $atts ) {
     // Build post types array
     $post_types = array_map( "trim", explode( ",", $atts["post_type"] ) );
 
-    // Build query args
+    // Build query args — load ALL posts, pagination is client-side
     $query_args = array(
         "post_type"      => $post_types,
-        "posts_per_page" => intval( $atts["posts_number"] ),
+        "posts_per_page" => -1,
         "post_status"    => array( "publish", "private" ),
         "perm"           => "readable",
         "orderby"        => "date",
@@ -247,19 +247,31 @@ function tag_portfolio_render( $atts ) {
         $wrapper_classes[] = "et_pb_filterable_portfolio_fullwidth";
     }
 
+    // Pagination div — Divi's JS fills in the page links dynamically
+    $pagination_html = "";
+    if ( $atts["show_pagination"] === "on" ) {
+        $pagination_html = "<div class=\"et_pb_portofolio_pagination clearfix\"></div>";
+        $pagination_class = "clearfix";
+    } else {
+        $pagination_class = "no_pagination";
+    }
+
     $output = sprintf(
         "<div class=\"%s\" data-posts-number=\"%s\">" .
             "%s" .
-            "<div class=\"et_pb_portfolio_items_wrapper clearfix\">" .
+            "<div class=\"et_pb_portfolio_items_wrapper %s\">" .
                 "<div class=\"et_pb_portfolio_items\">" .
                     "%s" .
                 "</div>" .
             "</div>" .
+            "%s" .
         "</div>",
         esc_attr( implode( " ", $wrapper_classes ) ),
-        esc_attr( $query->found_posts ),
+        esc_attr( intval( $atts["posts_number"] ) ),
         $filters_html,
-        $items_html
+        $pagination_class,
+        $items_html,
+        $pagination_html
     );
 
     return $output;
