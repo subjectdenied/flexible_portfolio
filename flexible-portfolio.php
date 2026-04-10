@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Flexible Portfolio
  * Description: Filterable portfolio grid for posts/pages using WP categories/tags. Full Divi Builder integration with Visual Builder preview. Also works as a standalone shortcode [tag_portfolio].
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: subjectdenied
  * Text Domain: flexible-portfolio
  * Requires at least: 5.0
@@ -11,7 +11,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'FLEX_PORTFOLIO_VERSION', '1.0.0' );
+define( 'FLEX_PORTFOLIO_VERSION', '1.1.0' );
 define( 'FLEX_PORTFOLIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FLEX_PORTFOLIO_URL', plugin_dir_url( __FILE__ ) );
 
