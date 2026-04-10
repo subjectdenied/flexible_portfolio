@@ -19,7 +19,8 @@ docker cp includes/tag-portfolio-shortcode.php rt-backup-docker-env-wordpress-ta
 docker cp scripts/builder-bundle.min.js rt-backup-docker-env-wordpress-tafel-oesterreich-local-web-1:/var/www/html/wp-content/plugins/flexible-portfolio/scripts/builder-bundle.min.js
 
 # Clear Divi caches (required after PHP field/callback changes)
-docker exec rt-backup-docker-env-wordpress-tafel-oesterreich-local-web-1 bash -c "rm -rf /var/www/html/wp-content/et-cache/*; php -r \"define('ABSPATH','/var/www/html/');require_once '/var/www/html/wp-load.php';et_fb_delete_builder_assets();delete_transient('et_builder_module_cache');delete_transient('et_builder_all_fields_cache');wp_cache_flush();\""
+# IMPORTANT: use chown after clearing et-cache, otherwise www-data can't regenerate CSS
+docker exec rt-backup-docker-env-wordpress-tafel-oesterreich-local-web-1 bash -c "rm -rf /var/www/html/wp-content/et-cache/*; chown -R www-data:www-data /var/www/html/wp-content/et-cache/; php -r \"define('ABSPATH','/var/www/html/');require_once '/var/www/html/wp-load.php';et_fb_delete_builder_assets();delete_transient('et_builder_module_cache');delete_transient('et_builder_all_fields_cache');wp_cache_flush();\""
 ```
 
 ## Demo page
