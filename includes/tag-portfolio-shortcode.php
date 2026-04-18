@@ -21,6 +21,8 @@ function tag_portfolio_render( $atts ) {
         "show_title"         => "on",
         "show_categories"    => "on",
         "show_pagination"    => "on",
+        "show_excerpt"       => "off",
+        "excerpt_length"     => "100",
         "fullwidth"          => "off",
         "columns"            => "4",
         "order"              => "DESC",
@@ -172,6 +174,21 @@ function tag_portfolio_render( $atts ) {
                 $permalink,
                 esc_html( get_the_title() )
             );
+        }
+
+        if ( $atts["show_excerpt"] === "on" ) {
+            $excerpt = has_excerpt() ? get_the_excerpt() : get_the_content();
+            $excerpt = wp_strip_all_tags( $excerpt );
+            $max_len = intval( $atts["excerpt_length"] );
+            if ( mb_strlen( $excerpt ) > $max_len ) {
+                $excerpt = mb_substr( $excerpt, 0, $max_len ) . "…";
+            }
+            if ( ! empty( $excerpt ) ) {
+                $items_html .= sprintf(
+                    "<p class=\"et_pb_portfolio_excerpt\">%s</p>",
+                    esc_html( $excerpt )
+                );
+            }
         }
 
         if ( $atts["show_categories"] === "on" && ! empty( $term_labels ) ) {

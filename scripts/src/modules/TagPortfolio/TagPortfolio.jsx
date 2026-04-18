@@ -28,6 +28,7 @@ class TagPortfolio extends Component {
             show_title = 'on',
             show_categories = 'on',
             show_pagination = 'on',
+            show_excerpt = 'off',
             posts_number = '12',
             fullwidth = 'off',
         } = this.props;
@@ -111,6 +112,9 @@ class TagPortfolio extends Component {
                                     <h2 className="et_pb_module_header">
                                         <a href={item.permalink}>{item.title}</a>
                                     </h2>
+                                )}
+                                {show_excerpt === 'on' && item.excerpt && (
+                                    <p className="et_pb_portfolio_excerpt">{item.excerpt}</p>
                                 )}
                                 {show_categories === 'on' && item.post_categories && item.post_categories.length > 0 && (
                                     <p className="post-meta">

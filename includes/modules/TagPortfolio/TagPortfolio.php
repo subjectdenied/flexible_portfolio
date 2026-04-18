@@ -140,6 +140,28 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                 'default'          => 'on',
                 'toggle_slug'      => 'elements',
             ),
+            'show_excerpt' => array(
+                'label'            => esc_html__( 'Kurztext anzeigen', 'flexible-portfolio' ),
+                'type'             => 'yes_no_button',
+                'option_category'  => 'configuration',
+                'options'          => array(
+                    'on'  => esc_html__( 'Ja', 'flexible-portfolio' ),
+                    'off' => esc_html__( 'Nein', 'flexible-portfolio' ),
+                ),
+                'default'          => 'off',
+                'toggle_slug'      => 'elements',
+                'computed_affects'  => array( '__fp_items' ),
+            ),
+            'excerpt_length' => array(
+                'label'            => esc_html__( 'Kurztext Länge', 'flexible-portfolio' ),
+                'type'             => 'range',
+                'option_category'  => 'configuration',
+                'default'          => '100',
+                'range_settings'   => array( 'min' => '10', 'max' => '500', 'step' => '10' ),
+                'toggle_slug'      => 'elements',
+                'show_if'          => array( 'show_excerpt' => 'on' ),
+                'computed_affects'  => array( '__fp_items' ),
+            ),
             'fullwidth' => array(
                 'label'            => esc_html__( 'Layout', 'flexible-portfolio' ),
                 'type'             => 'select',
@@ -168,6 +190,7 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                 'computed_depends_on' => array(
                     'post_type', 'filter_by', 'include_categories', 'include_tags',
                     'include_posts', 'posts_number', 'fullwidth', 'order',
+                    'show_excerpt', 'excerpt_length',
                 ),
             ),
             '__fp_terms' => array(
@@ -293,11 +316,20 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
                     $thumbnail = get_the_post_thumbnail( get_the_ID(), array( $width, $height ) );
                 }
 
+                $excerpt = '';
+                $max_len = intval( $args['excerpt_length'] ?? 100 );
+                $raw = has_excerpt() ? get_the_excerpt() : get_the_content();
+                $excerpt = wp_strip_all_tags( $raw );
+                if ( mb_strlen( $excerpt ) > $max_len ) {
+                    $excerpt = mb_substr( $excerpt, 0, $max_len ) . '…';
+                }
+
                 $items[] = array(
                     'id'               => get_the_ID(),
                     'title'            => get_the_title(),
                     'permalink'        => get_permalink(),
                     'thumbnail'        => $thumbnail,
+                    'excerpt'          => $excerpt,
                     'post_categories'  => $terms,
                     'category_classes' => $category_classes,
                 );
