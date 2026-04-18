@@ -42,5 +42,9 @@ function flex_portfolio_enqueue_styles() {
     } else {
         wp_enqueue_style( 'flex-portfolio-standalone', FLEX_PORTFOLIO_URL . 'assets/css/portfolio-standalone.css', array(), FLEX_PORTFOLIO_VERSION );
     }
+
+    wp_add_inline_style( defined( 'ET_BUILDER_VERSION' ) ? 'flex-portfolio-base' : 'flex-portfolio-standalone',
+        '.et_pb_portfolio_item .et_pb_portfolio_excerpt { font-size: 14px; color: #666; margin: 0.7em 0 0; line-height: 1.5; }'
+    );
 }
 add_action( 'wp_enqueue_scripts', 'flex_portfolio_enqueue_styles' );

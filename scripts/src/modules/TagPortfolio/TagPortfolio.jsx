@@ -114,7 +114,7 @@ class TagPortfolio extends Component {
                                     </h2>
                                 )}
                                 {show_excerpt === 'on' && item.excerpt && (
-                                    <p className="et_pb_portfolio_excerpt">{item.excerpt}</p>
+                                    <p className="et_pb_portfolio_excerpt" style={{ fontSize: '14px', color: '#666', margin: '0.7em 0 0', lineHeight: '1.5' }}>{item.excerpt}</p>
                                 )}
                                 {show_categories === 'on' && item.post_categories && item.post_categories.length > 0 && (
                                     <p className="post-meta">
