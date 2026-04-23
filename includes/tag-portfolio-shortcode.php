@@ -301,7 +301,8 @@ function et_pb_tag_portfolio_fallback( $atts, $content = '' ) {
     $keys = array(
         'post_type', 'filter_by', 'include_categories', 'include_tags',
         'include_posts', 'posts_number', 'show_filter', 'show_title',
-        'show_categories', 'fullwidth', 'columns', 'order',
+        'show_categories', 'show_excerpt', 'excerpt_length',
+        'show_pagination', 'fullwidth', 'columns', 'order',
     );
     foreach ( $keys as $key ) {
         if ( isset( $atts[ $key ] ) && $atts[ $key ] !== '' ) {

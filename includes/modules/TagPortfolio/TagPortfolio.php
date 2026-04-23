@@ -386,7 +386,8 @@ class ET_Builder_Module_TagPortfolio extends ET_Builder_Module {
         $keys = array(
             'post_type', 'filter_by', 'include_categories', 'include_tags',
             'include_posts', 'posts_number', 'show_filter', 'show_title',
-            'show_categories', 'show_pagination', 'fullwidth', 'columns', 'order',
+            'show_categories', 'show_excerpt', 'excerpt_length',
+            'show_pagination', 'fullwidth', 'columns', 'order',
         );
 
         foreach ( $keys as $key ) {
