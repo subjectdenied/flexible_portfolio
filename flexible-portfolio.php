@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Flexible Portfolio
  * Description: Filterable portfolio grid for posts/pages using WP categories/tags. Full Divi Builder integration with Visual Builder preview. Also works as a standalone shortcode [tag_portfolio].
- * Version: 1.2.2
+ * Version: 1.2.3
  * Author: subjectdenied
  * Text Domain: flexible-portfolio
  * Requires at least: 5.0
@@ -11,7 +11,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'FLEX_PORTFOLIO_VERSION', '1.2.2' );
+define( 'FLEX_PORTFOLIO_VERSION', '1.2.3' );
 define( 'FLEX_PORTFOLIO_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FLEX_PORTFOLIO_URL', plugin_dir_url( __FILE__ ) );
 
@@ -24,13 +24,43 @@ function flex_portfolio_init_extension() {
 }
 add_action( 'divi_extensions_init', 'flex_portfolio_init_extension' );
 
-// Enqueue Divi portfolio CSS on frontend when our module is used
-function flex_portfolio_enqueue_styles() {
+// True when the current singular page actually uses the portfolio module/shortcode.
+function flex_portfolio_page_has_portfolio() {
     global $post;
     if ( ! is_a( $post, 'WP_Post' ) ) {
+        return false;
+    }
+    return has_shortcode( $post->post_content, 'et_pb_tag_portfolio' )
+        || has_shortcode( $post->post_content, 'tag_portfolio' );
+}
+
+// DiviExtension's base class enqueues styles/style.min.css ("<name>-styles") and
+// scripts/frontend-bundle.min.js ("<name>-frontend-bundle") on *every* frontend
+// page. Both are tiny, but there's no reason to render-block pages that have no
+// portfolio on them, so dequeue them there. Runs after Divi's own enqueue (pri 10).
+function flex_portfolio_dequeue_global_assets() {
+    // Never touch builder/admin contexts — the frontend bundle is needed for
+    // Visual Builder module-picker registration (see v1.1.0 changelog).
+    if ( is_admin() ) {
         return;
     }
-    if ( ! has_shortcode( $post->post_content, 'et_pb_tag_portfolio' ) && ! has_shortcode( $post->post_content, 'tag_portfolio' ) ) {
+    if ( isset( $_GET['et_fb'] ) ) {
+        return;
+    }
+    if ( function_exists( 'et_core_is_fb_enabled' ) && et_core_is_fb_enabled() ) {
+        return;
+    }
+    if ( flex_portfolio_page_has_portfolio() ) {
+        return;
+    }
+    wp_dequeue_style( 'flexible-portfolio-styles' );
+    wp_dequeue_script( 'flexible-portfolio-frontend-bundle' );
+}
+add_action( 'wp_enqueue_scripts', 'flex_portfolio_dequeue_global_assets', 20 );
+
+// Enqueue Divi portfolio CSS on frontend when our module is used
+function flex_portfolio_enqueue_styles() {
+    if ( ! flex_portfolio_page_has_portfolio() ) {
         return;
     }
 
